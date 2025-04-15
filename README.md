@@ -1,155 +1,113 @@
-# 🌐 Static Website Hosting using Microsoft Azure Blob Storage
-
----
-
-## 📌 Overview
-
-This project demonstrates how to deploy a static website using Microsoft Azure's *Blob Storage* with the *Static Website Hosting* feature. It’s a beginner-friendly project that helps you understand Azure Storage services and deploy front-end code (HTML, CSS, JavaScript) without a web server.
-
----
-
-## 🧰 Technologies & Tools Used
-
-- *Microsoft Azure*
-  - Storage Account
-  - Blob Storage (Static Website Hosting)
-- *HTML, CSS, JavaScript* (Basic Website Files)
-- *Azure Portal*
-- *VS Code* (or any code editor)
-
----
-
-## 🎯 Objectives
-
-- Create and configure an Azure Storage Account.
-- Enable Static Website Hosting.
-- Upload static files (HTML/CSS/JS) to the $web container.
-- Access and verify website via the public URL.
-
----
-
-## 🛠 Step-by-Step Implementation
-
-### 1. *Create an Azure Storage Account*
-
-- Go to [Azure Portal](https://portal.azure.com)
-- Navigate to Storage accounts > + Create
-- Fill in the details:
-  - *Subscription*: Select your subscription
-  - *Resource group*: Create new or use existing
-  - *Storage account name*: Must be globally unique
-  - *Region*: Choose nearest data center
-  - *Performance*: Standard
-  - *Redundancy*: LRS (Locally Redundant Storage)
-
-Click *Review + Create, then **Create*.
-
----
-
-### 2. *Enable Static Website Hosting*
-
-- Go to your created *Storage Account*
-- In the left panel, find *"Static website"*
-- Click *Enable*
-- Enter the default document name: index.html
-- Optionally, enter error document path: 404.html
-- Click *Save*
-
-Azure creates a *$web* container for hosting.
-
----
-
-### 3. *Upload Static Files*
-
-- Go to *Containers > $web*
-- Click *Upload*
-- Select index.html, style.css, and other files from your project directory
-- Click *Upload*
-
----
-
-### 4. *Access Your Website*
-
-- After uploading, go back to *Static Website* settings
-- Copy the *Primary endpoint URL*
-- Paste it in the browser to view your hosted static site.
-
-Example:
-
-https://<storage_account_name>.z13.web.core.windows.net
 
 
----
+# *Deployment of Django Application on Microsoft Azure*
 
-## 🧪 Example Files
+## *1. Introduction*
 
-### index.html
-html
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>My Azure Static Site</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <h1>Welcome to My Azure Website</h1>
-  <p>This website is hosted on Azure Blob Storage!</p>
-</body>
-</html>
+The purpose of this report is to detail the process of deploying a *Django web application* to *Microsoft Azure* using the *App Service* platform. This deployment provides a scalable and cost-effective solution for running a production-grade Django web application in the cloud. The report covers the steps involved, including environment configuration, integration with Azure services like databases and storage, and deployment procedures.
 
+## *2. Objectives*
 
-### style.css
-css
-body {
-  font-family: Arial, sans-serif;
-  background-color: #f4f4f4;
-  text-align: center;
-  padding: 50px;
-}
+- Deploy a Django web application on Microsoft Azure.
+- Integrate Azure-managed databases (PostgreSQL or MySQL).
+- Use Azure Blob Storage for handling static and media files.
+- Ensure that the deployment is production-ready and secure.
 
+## *3. Tools and Technologies Used*
 
----
+- *Microsoft Azure*: App Services, Azure Database for PostgreSQL/MySQL, Azure Blob Storage.
+- *Django*: Python-based web framework for building the application.
+- *Git*: Version control for deployment via GitHub or Azure.
+- *Gunicorn*: WSGI server for running the Django application in a production environment.
+- *Azure CLI*: Command-line tool for managing Azure resources.
 
-## 📦 Folder Structure
+## *4. Prerequisites*
 
+Before deploying the Django app, the following prerequisites should be in place:
 
-azure-static-website/
-├── index.html
-├── style.css
-└── 404.html (optional)
+- *Microsoft Azure account*: A valid subscription for using Azure services.
+- *Django project*: A fully developed Django application with the necessary settings for production.
+- *Azure Storage*: An Azure Storage account set up for handling static files and media content.
 
+## *5. Process Overview*
 
----
+### *Step 1: Set Up Your Django Project*
 
-## 🔐 Security Considerations
+1. *Create and configure the Django project* locally. Ensure that the project runs successfully in a local environment before proceeding to deployment.
+2. Install the required dependencies and configure the database to use *PostgreSQL* or *MySQL* for production. Update the DATABASES configuration in settings.py for database integration.
 
-- This website is *publicly accessible* by default.
-- Avoid uploading sensitive data.
-- You can use *Azure CDN* or *Custom Domain + HTTPS* for production usage.
+### *Step 2: Configure Django for Azure Deployment*
 
----
+1. *Database Configuration*:
+   - Update the DATABASES setting in settings.py to use *Azure Database for PostgreSQL* or *MySQL*. Configure the credentials (username, password, host, etc.) using environment variables to ensure security.
 
-## 🧠 Learning Outcomes
+2. *Static and Media Files*:
+   - Install django-storages for integration with Azure Blob Storage:
+     bash
+     pip install django-storages
+     
+   - Update settings.py to use Azure Blob Storage for static and media file management:
+     python
+     AWS_STORAGE_BUCKET_NAME = '<your-storage-account-name>'
+     AWS_ACCESS_KEY_ID = '<your-access-key>'
+     AWS_SECRET_ACCESS_KEY = '<your-secret-key>'
+     
 
-- Understanding Azure Storage Accounts and Blob service
-- Hosting a website using cloud infrastructure
-- Basic cloud deployment workflow
+### *Step 3: Set Up an Azure App Service*
 
----
+1. Go to the *Azure Portal* and create a *Web App* (App Service) for hosting the Django application.
+2. Choose *Python* as the runtime stack and set up the desired region and plan for scaling.
+3. Configure the *App Service* to use *Git* for deployment. You can either use *GitHub Actions* for CI/CD or directly link your *GitHub repository*.
 
-## 📈 Possible Extensions
+### *Step 4: Prepare the Environment for Deployment*
 
-- Add a *Contact Form* using Azure Functions (serverless backend)
-- Deploy a *Portfolio Website*
-- Connect a *Custom Domain* via Azure DNS
-- Use *GitHub Actions* to automate deployment on file changes
+1. *Git Configuration*:
+   - Push your Django application to a GitHub repository, or set up local Git for deployment.
+   - Ensure the application includes the requirements.txt file with all the necessary libraries like django, gunicorn, django-storages, etc.
 
----
+2. *Configuration Settings*:
+   - Set environment variables in the *App Service Configuration* panel in the Azure portal (e.g., DJANGO_SECRET_KEY, DEBUG=False, database credentials, etc.).
 
-## 📝 References
+### *Step 5: Deploy the Application*
 
-- [Azure Static Website Docs](https://learn.microsoft.com/en-us/azure/storage/blobs/storage-blob-static-website)
-- [Azure Free Tier](https://azure.microsoft.com/en-us/free/)
+1. Once the App Service is set up, deploy the Django application via *GitHub Actions, **Git, or **FTP*.
+2. After deployment, run *database migrations* using the *Kudu Console*:
+   bash
+   python manage.py migrate
+   
 
----
+3. Use *Gunicorn* as the WSGI server for production:
+   bash
+   pip install gunicorn
+   
+
+4. Configure Azure to use *Gunicorn* in the startup command:
+   bash
+   gunicorn myproject.wsgi:application --bind 0.0.0.0:8000
+   
+
+### *Step 6: Verify and Monitor*
+
+1. After successful deployment, access the website through the *App Service URL* provided by Azure.
+2. Set up *Azure Application Insights* for monitoring the application’s performance and errors.
+
+### *Step 7: Handling Static and Media Files*
+
+1. Configure Azure Blob Storage to handle the static and media files generated by the Django application.
+2. Set up the appropriate storage containers in the Azure portal for *static* and *media* files.
+
+## *6. Challenges Encountered*
+
+- *Database Configuration*: Migrating the local SQLite database to a cloud-based PostgreSQL database required careful configuration of the database settings in settings.py.
+- *Static File Management*: Integrating Azure Blob Storage for static and media files required adjusting the settings and ensuring correct permissions for accessing the storage containers.
+
+## *7. Conclusion*
+
+Deploying a Django application on *Microsoft Azure* provides a scalable, secure, and efficient solution for hosting web applications. The process involves configuring databases, managing static files, and using Azure App Services for hosting. This deployment method ensures that the application is production-ready and can scale as needed. By leveraging Azure’s cloud infrastructure, this deployment ensures reliability and security for a production-grade Django web application.
+
+## *8. References*
+
+- [Microsoft Azure Documentation for App Services](https://learn.microsoft.com/en-us/azure/app-service/quickstart-python)
+- [Django on Azure](https://learn.microsoft.com/en-us/azure/app-service/tutorial-python-django)
+- [Azure Database for PostgreSQL](https://learn.microsoft.com/en-us/azure/postgresql/)
+
